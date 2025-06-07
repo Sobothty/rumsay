@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const CategoriesCard = ({ id, imageUrl, type }) => {
+const CategoriesRoomTypeCard = ({ id, imageUrl, type }) => {
   return (
     <Link to="/booking">
       <div className="flex flex-col items-center rounded-lg hover:shadow-lg transition cursor-pointer relative">
@@ -17,4 +17,4 @@ const CategoriesCard = ({ id, imageUrl, type }) => {
   );
 };
 
-export default CategoriesCard;
+export default CategoriesRoomTypeCard;

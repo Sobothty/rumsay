@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   User2,
   LayoutDashboard,
   Settings,
   LogOut,
-  ShoppingCart,
+  SquarePlus,
 } from "lucide-react";
 import axios from "axios";
 
@@ -80,12 +80,6 @@ export default function NavbarPage() {
     navigate("/");
   };
 
-  // Add to Cart handler (stub)
-  const handleAddToCart = () => {
-    // TODO: Connect to cart logic
-    alert("Added to cart!");
-  };
-
   return (
     <nav className="sticky top-4 z-50 mx-auto max-w-[1280px] min-w-[320px] sm:min-w-[640px] rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-lg shadow-xl border border-gray-200 dark:border-gray-800 px-6 py-3 flex items-center transition-all duration-300">
       <Link to="/" className="flex items-center gap-3">
@@ -113,15 +107,15 @@ export default function NavbarPage() {
             )}
           </Link>
         ))}
-        {/* Modern Add to Cart button (only show if authenticated) */}
-        {isAuthenticated && (
-          <button
-            onClick={handleAddToCart}
-            className="ml-2 flex items-center gap-2 px-5 py-2 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        {/* Modern Add to Cart button (only show if authenticated and not on /booking) */}
+        {isAuthenticated && activePath !== "/booking" && (
+          <Link
+            to="/booking"
+            className="ml-2 flex items-center gap-2 px-5 py-2 rounded-full bg-primary text-white font-bold shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           >
-            <ShoppingCart className="w-5 h-5" />
-            Add to Cart
-          </button>
+            <SquarePlus className="w-5 h-5" />
+            Booking
+          </Link>
         )}
         {/* Hide Sign In/Out/Up if authenticated, show user icon */}
         {!isAuthenticated && (
@@ -254,15 +248,15 @@ export default function NavbarPage() {
               )}
             </Link>
           ))}
-          {/* Modern Add to Cart button for mobile (only show if authenticated) */}
-          {isAuthenticated && (
-            <button
-              onClick={handleAddToCart}
-              className="mt-2 flex items-center justify-center gap-2 px-6 py-2 rounded-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white font-bold shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          {/* Modern Add to Cart button for mobile (only show if authenticated and not on /booking) */}
+          {isAuthenticated && activePath !== "/booking" && (
+            <Link
+              to="/booking"
+              className="mt-2 flex items-center justify-center gap-2 px-6 py-2 rounded-full bg-primary text-white font-bold shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
             >
-              <ShoppingCart className="w-5 h-5" />
-              Add to Cart
-            </button>
+              <SquarePlus className="w-5 h-5" />
+              Booking
+            </Link>
           )}
           {/* Hide Sign In/Out/Up if authenticated, show user icon */}
           {!isAuthenticated && (

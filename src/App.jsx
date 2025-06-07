@@ -2,9 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./App.css";
 import RootLayout from "./components/layout/RootLayout";
-import Homepage from "./pages/Homepage";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
+import Homepage from "./pages/homePage";
+import About from "./pages/aboutPage";
+import Contact from "./pages/contactPage";
 import SignUp from "./pages/auth/SignUp";
 import SignIn from "./pages/auth/SignIn";
 import AdminDashboard from "./pages/admin/Dashboard";
@@ -14,7 +14,7 @@ import RoomTypes from "./pages/admin/page/RoomTypes";
 import AllUsers from "./pages/admin/page/AllUsers";
 import { Reservation } from "./pages/admin/page/Reservation";
 import ProfileDashboard from "./pages/profileDashboard";
-import BookingRoom from "./pages/BookingRoom";
+import BookingRoom from "./pages/bookingRoomPage";
 
 function App() {
   return (

@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import AllRoomsType from '../components/AllRoomsCard';
-import RoomFilter from '../components/layout/filter';
+import { useState } from "react";
+import AllRoomsType from "../components/RoomCardBooking";
+import RoomFilter from "./layouts/filter";
 
 const BookingRoom = () => {
   const [selectedTypes, setSelectedTypes] = useState([]);
@@ -37,4 +37,3 @@ const BookingRoom = () => {
 };
 
 export default BookingRoom;
-

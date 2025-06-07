@@ -1,4 +1,3 @@
-import React from 'react'
 import { Award, Clock, MapPin, Users, Wifi, Car, Utensils, Dumbbell, Waves, Star } from 'lucide-react'
 
 export default function About() {
