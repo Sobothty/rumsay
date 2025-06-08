@@ -80,6 +80,10 @@ export default function NavbarPage() {
     navigate("/");
   };
 
+  // Helper to check if on /booking or /room-detail/:id
+  const isBookingOrRoomDetail =
+    activePath === "/booking" || /^\/room-detail\/[^/]+$/.test(activePath);
+
   return (
     <nav className="sticky top-4 z-50 mx-auto max-w-[1280px] min-w-[320px] sm:min-w-[640px] rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-lg shadow-xl border border-gray-200 dark:border-gray-800 px-6 py-3 flex items-center transition-all duration-300">
       <Link to="/" className="flex items-center gap-3">
@@ -107,8 +111,8 @@ export default function NavbarPage() {
             )}
           </Link>
         ))}
-        {/* Modern Add to Cart button (only show if authenticated and not on /booking) */}
-        {isAuthenticated && activePath !== "/booking" && (
+        {/* Modern Add to Cart button (only show if authenticated and not on /booking or /room-detail/:id) */}
+        {isAuthenticated && !isBookingOrRoomDetail && (
           <Link
             to="/booking"
             className="ml-2 flex items-center gap-2 px-5 py-2 rounded-full bg-primary text-white font-bold shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
@@ -248,8 +252,8 @@ export default function NavbarPage() {
               )}
             </Link>
           ))}
-          {/* Modern Add to Cart button for mobile (only show if authenticated and not on /booking) */}
-          {isAuthenticated && activePath !== "/booking" && (
+          {/* Modern Add to Cart button for mobile (only show if authenticated and not on /booking or /room-detail/:id) */}
+          {isAuthenticated && !isBookingOrRoomDetail && (
             <Link
               to="/booking"
               className="mt-2 flex items-center justify-center gap-2 px-6 py-2 rounded-full bg-primary text-white font-bold shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"

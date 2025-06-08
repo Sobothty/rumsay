@@ -15,6 +15,7 @@ import AllUsers from "./pages/admin/page/AllUsers";
 import { Reservation } from "./pages/admin/page/Reservation";
 import ProfileDashboard from "./pages/profileDashboard";
 import BookingRoom from "./pages/bookingRoomPage";
+import RoomDetail from "./components/RoomDetail";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="sign-in" element={<SignIn />} />
           <Route path="dashboard" element={<ProfileDashboard />} />
           <Route path="booking" element={<BookingRoom />} />
+          <Route path="room-detail/:id" element={<RoomDetail />} />
         </Route>
         {/* Admin pages without RootLayout (no navbar/footer) */}
         <Route path="admin" element={<AdminDashboard />}>
