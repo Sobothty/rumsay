@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const AllRoomsType = ({ onBook }) => {
+const AllRoomsType = ({ onBook, selectedPrices = [], selectedTypes = [] }) => {
   const [roomTypes, setRoomTypes] = useState([]);
 
   useEffect(() => {
@@ -19,9 +19,22 @@ const AllRoomsType = ({ onBook }) => {
     fetchRoomTypes();
   }, []);
 
+  // Filter by selectedPrices and selectedTypes
+  const filteredRooms = roomTypes
+    .filter((room) =>
+      selectedPrices.length === 0
+        ? true
+        : selectedPrices.some(
+            (range) => room.price >= range.min && room.price <= range.max
+          )
+    )
+    .filter((room) =>
+      selectedTypes.length === 0 ? true : selectedTypes.includes(room.type)
+    );
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-8">
-      {roomTypes.map((room) => (
+      {filteredRooms.map((room) => (
         <div
           key={room.id}
           className="rounded-3xl shadow-xl hover:shadow-2xl transition duration-300 overflow-hidden border border-gray-100 bg-white flex flex-col group"

@@ -79,11 +79,13 @@ export default function NavbarPage() {
     };
   }, [userMenuOpen]);
 
-  // Listen for cart updates from other components
+  // Show cart dropdown immediately when a new item is added
   useEffect(() => {
     const handleCartUpdate = () => {
       const stored = localStorage.getItem("cartItems");
       setCartItems(stored ? JSON.parse(stored) : []);
+      // If a new item was added, open the cart dropdown
+      setCartOpen(true);
     };
     window.addEventListener("cartUpdated", handleCartUpdate);
     return () => window.removeEventListener("cartUpdated", handleCartUpdate);

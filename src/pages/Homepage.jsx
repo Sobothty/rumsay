@@ -49,7 +49,7 @@ export default function Homepage() {
     <>
       <main className="w-full m-auto max-w-7xl ">
         {/* Hero Section */}
-        <section className="relative h-[90vh] min-h-[600px] bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden rounded-3xl shadow-2xl mt-10 mb-20">
+        <section className="relative h-[50vh] min-h-[600px] bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden rounded-3xl shadow-2xl mt-10 mb-20">
           {/* Background Image with Parallax Effect */}
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center transform hover:scale-105 transition-transform duration-1000"></div>
 

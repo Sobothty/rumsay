@@ -1,4 +1,5 @@
-const roomTypes = ["Standard", "Deluxe", "Suite", "Family"];
+import { useEffect, useState } from "react";
+
 const priceRanges = [
   { label: "$0 - $50", min: 0, max: 50 },
   { label: "$51 - $100", min: 51, max: 100 },
@@ -17,19 +18,48 @@ const guestOptions = [1, 2, 3, 4, 5];
 const RoomFilter = ({
   selectedTypes,
   setSelectedTypes,
-  selectedPrice,
-  setSelectedPrice,
+  selectedPrice, // now should be selectedPrices (array)
+  setSelectedPrice, // now should be setSelectedPrices
   selectedAmenities,
   setSelectedAmenities,
   guests,
   setGuests,
 }) => {
+  // Fetch room types from API
+  const [roomTypes, setRoomTypes] = useState([]);
+
+  useEffect(() => {
+    const fetchRoomTypes = async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/api/room-types`
+        );
+        const result = await res.json();
+        // Extract unique types from API data
+        const types = Array.from(
+          new Set((result.data || []).map((r) => r.type))
+        );
+        setRoomTypes(types);
+      } catch (err) {
+        setRoomTypes([]);
+      }
+    };
+    fetchRoomTypes();
+  }, []);
+
+  // Ensure selectedPrices is always an array
+  const selectedPrices = Array.isArray(selectedPrice) ? selectedPrice : [];
+
+  const setSelectedPrices = setSelectedPrice;
+
   const toggleItem = (stateSetter, value) => {
-    stateSetter((prev) =>
-      prev.includes(value)
-        ? prev.filter((item) => item !== value)
-        : [...prev, value]
-    );
+    stateSetter((prev) => {
+      // Ensure prev is always an array
+      const arr = Array.isArray(prev) ? prev : [];
+      return arr.includes(value)
+        ? arr.filter((item) => item !== value)
+        : [...arr, value];
+    });
   };
 
   return (
@@ -40,17 +70,21 @@ const RoomFilter = ({
       {/* Room Types */}
       <div className="mb-6 w-full">
         <h3 className="text-lg font-semibold mb-3">Room Type</h3>
-        {roomTypes.map((type) => (
-          <label key={type} className="block text-sm mb-2 cursor-pointer">
-            <input
-              type="checkbox"
-              className="mr-2 accent-[#2a1a4a]"
-              checked={selectedTypes.includes(type)}
-              onChange={() => toggleItem(setSelectedTypes, type)}
-            />
-            {type}
-          </label>
-        ))}
+        {roomTypes.length === 0 ? (
+          <div className="text-gray-400 text-sm">Loading...</div>
+        ) : (
+          roomTypes.map((type) => (
+            <label key={type} className="block text-sm mb-2 cursor-pointer">
+              <input
+                type="checkbox"
+                className="mr-2 accent-[#2a1a4a]"
+                checked={selectedTypes.includes(type)}
+                onChange={() => toggleItem(setSelectedTypes, type)}
+              />
+              {type}
+            </label>
+          ))
+        )}
       </div>
       {/* Price Range */}
       <div className="mb-6 w-full">
@@ -58,11 +92,12 @@ const RoomFilter = ({
         {priceRanges.map((range, i) => (
           <label key={i} className="block text-sm mb-2 cursor-pointer">
             <input
-              type="radio"
+              type="checkbox"
               className="mr-2 accent-[#2a1a4a]"
-              name="price"
-              checked={selectedPrice?.min === range.min}
-              onChange={() => setSelectedPrice(range)}
+              checked={selectedPrices.some(
+                (r) => r.min === range.min && r.max === range.max
+              )}
+              onChange={() => toggleItem(setSelectedPrices, range)}
             />
             {range.label}
           </label>
