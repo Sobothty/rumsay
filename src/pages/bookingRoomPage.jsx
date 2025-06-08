@@ -28,7 +28,11 @@ const BookingRoom = () => {
           <h1 className="text-3xl font-bold mb-6 text-gray-800">
             Available Rooms
           </h1>
-          <AllRoomsType />
+          <AllRoomsType
+            onBook={(roomType) => {
+              if (window.__addToCart) window.__addToCart(roomType);
+            }}
+          />
         </section>
       </main>
     </>

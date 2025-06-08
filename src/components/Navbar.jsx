@@ -6,6 +6,7 @@ import {
   Settings,
   LogOut,
   SquarePlus,
+  ShoppingCart,
 } from "lucide-react";
 import axios from "axios";
 
@@ -20,6 +21,7 @@ const navLinks = [
 export default function NavbarPage() {
   const [open, setOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const userMenuRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -28,6 +30,12 @@ export default function NavbarPage() {
   // Auth state
   const [profile, setProfile] = useState(null);
   const token = localStorage.getItem("authToken");
+
+  // Cart state
+  const [cartItems, setCartItems] = useState(() => {
+    const stored = localStorage.getItem("cartItems");
+    return stored ? JSON.parse(stored) : [];
+  });
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -71,6 +79,16 @@ export default function NavbarPage() {
     };
   }, [userMenuOpen]);
 
+  // Listen for cart updates from other components
+  useEffect(() => {
+    const handleCartUpdate = () => {
+      const stored = localStorage.getItem("cartItems");
+      setCartItems(stored ? JSON.parse(stored) : []);
+    };
+    window.addEventListener("cartUpdated", handleCartUpdate);
+    return () => window.removeEventListener("cartUpdated", handleCartUpdate);
+  }, []);
+
   const isAuthenticated = !!token && !!profile;
 
   const handleLogout = () => {
@@ -83,6 +101,29 @@ export default function NavbarPage() {
   // Helper to check if on /booking or /room-detail/:id
   const isBookingOrRoomDetail =
     activePath === "/booking" || /^\/room-detail\/[^/]+$/.test(activePath);
+
+  // Add to cart handler (expects roomType object)
+  const handleAddToCart = (roomType) => {
+    if (!roomType) return;
+    const updated = [...cartItems, roomType];
+    setCartItems(updated);
+    localStorage.setItem("cartItems", JSON.stringify(updated));
+    window.dispatchEvent(new Event("cartUpdated"));
+    setCartOpen(true);
+  };
+
+  // Remove item from cart by index
+  const handleRemoveFromCart = (idx) => {
+    const updated = cartItems.filter((_, i) => i !== idx);
+    setCartItems(updated);
+    localStorage.setItem("cartItems", JSON.stringify(updated));
+    window.dispatchEvent(new Event("cartUpdated"));
+  };
+
+  // For demo: expose addToCart globally so RoomDetail/BookingRoomPage can call it
+  useEffect(() => {
+    window.__addToCart = handleAddToCart;
+  });
 
   return (
     <nav className="sticky top-4 z-50 mx-auto max-w-[1280px] min-w-[320px] sm:min-w-[640px] rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-lg shadow-xl border border-gray-200 dark:border-gray-800 px-6 py-3 flex items-center transition-all duration-300">
@@ -111,7 +152,7 @@ export default function NavbarPage() {
             )}
           </Link>
         ))}
-        {/* Modern Add to Cart button (only show if authenticated and not on /booking or /room-detail/:id) */}
+        {/* Show Booking button if authenticated and NOT on booking/room-detail */}
         {isAuthenticated && !isBookingOrRoomDetail && (
           <Link
             to="/booking"
@@ -120,6 +161,72 @@ export default function NavbarPage() {
             <SquarePlus className="w-5 h-5" />
             Booking
           </Link>
+        )}
+        {/* Show Add to Cart button if authenticated and on booking/room-detail */}
+        {isAuthenticated && isBookingOrRoomDetail && (
+          <button
+            onClick={() => setCartOpen((prev) => !prev)}
+            className="ml-2 flex items-center gap-2 px-5 py-2 rounded-full bg-blue-500 text-white font-bold shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 relative"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            Add to Cart
+            {cartItems.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold">
+                {cartItems.length}
+              </span>
+            )}
+            {/* Cart dropdown */}
+            {cartOpen && (
+              <div className="absolute right-0 top-12 min-w-[320px] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 py-2 z-50 transition-all duration-300 origin-top-right">
+                <div className="px-6 py-3 font-bold border-b border-gray-100 dark:border-gray-800 text-lg flex items-center gap-2">
+                  <ShoppingCart className="w-5 h-5 text-blue-500" />
+                  Your Bookings
+                </div>
+                {cartItems.length === 0 ? (
+                  <div className="px-6 py-8 text-gray-400 text-center">
+                    <span className="block text-3xl mb-2">🛒</span>
+                    No rooms in cart.
+                  </div>
+                ) : (
+                  <div className="max-h-80 overflow-y-auto">
+                    {cartItems.map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-center gap-4 px-6 py-4 border-b last:border-b-0 border-gray-100 dark:border-gray-800 group hover:bg-blue-50 dark:hover:bg-gray-800 transition"
+                      >
+                        <img
+                          src={
+                            item.image_url ||
+                            "/src/assets/categories/category-room.jpg"
+                          }
+                          alt={item.type}
+                          className="w-16 h-16 rounded-xl object-cover border border-gray-200 dark:border-gray-700 shadow"
+                        />
+                        <div className="flex-1">
+                          <div className="font-semibold text-gray-800 dark:text-gray-100 text-base">
+                            {item.type}
+                          </div>
+                          <div className="text-sm text-gray-500 dark:text-gray-400">
+                            ${item.price}/night
+                          </div>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleRemoveFromCart(idx);
+                          }}
+                          className="ml-2 px-3 py-1 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs font-bold shadow hover:scale-105 transition-all duration-150 hover:bg-red-600"
+                          title="Remove booking"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </button>
         )}
         {/* Hide Sign In/Out/Up if authenticated, show user icon */}
         {!isAuthenticated && (
@@ -252,7 +359,7 @@ export default function NavbarPage() {
               )}
             </Link>
           ))}
-          {/* Modern Add to Cart button for mobile (only show if authenticated and not on /booking or /room-detail/:id) */}
+          {/* Mobile Booking button */}
           {isAuthenticated && !isBookingOrRoomDetail && (
             <Link
               to="/booking"
@@ -261,6 +368,72 @@ export default function NavbarPage() {
               <SquarePlus className="w-5 h-5" />
               Booking
             </Link>
+          )}
+          {/* Mobile Add to Cart button */}
+          {isAuthenticated && isBookingOrRoomDetail && (
+            <button
+              onClick={() => setCartOpen((prev) => !prev)}
+              className="mt-2 flex items-center justify-center gap-2 px-6 py-2 rounded-full bg-blue-500 text-white font-bold shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 relative"
+            >
+              <ShoppingCart className="w-5 h-5" />
+              Add to Cart
+              {cartItems.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold">
+                  {cartItems.length}
+                </span>
+              )}
+              {/* Cart dropdown */}
+              {cartOpen && (
+                <div className="absolute right-0 top-12 min-w-[320px] bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 py-2 z-50 transition-all duration-300 origin-top-right">
+                  <div className="px-6 py-3 font-bold border-b border-gray-100 dark:border-gray-800 text-lg flex items-center gap-2">
+                    <ShoppingCart className="w-5 h-5 text-blue-500" />
+                    Your Bookings
+                  </div>
+                  {cartItems.length === 0 ? (
+                    <div className="px-6 py-8 text-gray-400 text-center">
+                      <span className="block text-3xl mb-2">🛒</span>
+                      No rooms in cart.
+                    </div>
+                  ) : (
+                    <div className="max-h-80 overflow-y-auto">
+                      {cartItems.map((item, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-center gap-4 px-6 py-4 border-b last:border-b-0 border-gray-100 dark:border-gray-800 group hover:bg-blue-50 dark:hover:bg-gray-800 transition"
+                        >
+                          <img
+                            src={
+                              item.image_url ||
+                              "/src/assets/categories/category-room.jpg"
+                            }
+                            alt={item.type}
+                            className="w-16 h-16 rounded-xl object-cover border border-gray-200 dark:border-gray-700 shadow"
+                          />
+                          <div className="flex-1">
+                            <div className="font-semibold text-gray-800 dark:text-gray-100 text-base">
+                              {item.type}
+                            </div>
+                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                              ${item.price}/night
+                            </div>
+                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleRemoveFromCart(idx);
+                            }}
+                            className="ml-2 px-3 py-1 rounded-full bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs font-bold shadow hover:scale-105 transition-all duration-150 hover:bg-red-600"
+                            title="Remove booking"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </button>
           )}
           {/* Hide Sign In/Out/Up if authenticated, show user icon */}
           {!isAuthenticated && (

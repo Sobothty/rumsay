@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const AllRoomsType = () => {
+const AllRoomsType = ({ onBook }) => {
   const [roomTypes, setRoomTypes] = useState([]);
 
   useEffect(() => {
@@ -65,7 +65,12 @@ const AllRoomsType = () => {
                 >
                   View Details
                 </Link>
-                <button className="px-5 py-2 bg-gradient-to-r from-[#2a1a4a] to-[#4b2e83] text-white rounded-full text-base font-semibold shadow hover:scale-105 transition">
+                <button
+                  className="px-5 py-2 bg-gradient-to-r from-[#2a1a4a] to-[#4b2e83] text-white rounded-full text-base font-semibold shadow hover:scale-105 transition"
+                  onClick={() => {
+                    if (onBook) onBook(room);
+                  }}
+                >
                   Book Now
                 </button>
               </div>
