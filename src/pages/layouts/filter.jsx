@@ -33,7 +33,7 @@ const RoomFilter = ({
   };
 
   return (
-    <aside className="w-72 p-6 bg-white rounded-2xl flex flex-col items-start mt-5 h-fit sticky top-24">
+    <aside className="w-72 p-6 bg-white rounded-2xl flex flex-col items-start h-fit">
       <h2 className="text-2xl font-extrabold mb-6 text-[#2a1a4a]">
         Filter Rooms
       </h2>

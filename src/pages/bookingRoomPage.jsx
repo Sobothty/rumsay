@@ -9,30 +9,29 @@ const BookingRoom = () => {
   const [guests, setGuests] = useState(null);
 
   return (
-    <div className="flex min-h-screen justify-center pt-10">
-      <div className="flex w-full max-w-7xl px-4">
+    <>
+      <main className="flex m-auto max-w-7xl py-5">
         {/* Sidebar */}
-        <RoomFilter
-          selectedTypes={selectedTypes}
-          setSelectedTypes={setSelectedTypes}
-          selectedPrice={selectedPrice}
-          setSelectedPrice={setSelectedPrice}
-          selectedAmenities={selectedAmenities}
-          setSelectedAmenities={setSelectedAmenities}
-          guests={guests}
-          setGuests={setGuests}
-        />
-        {/* Main content */}
-        <main className="flex-1 p-6 lg:p-12">
+        <div className="sticky top-24 h-fit">
+          <RoomFilter
+            selectedTypes={selectedTypes}
+            setSelectedTypes={setSelectedTypes}
+            selectedPrice={selectedPrice}
+            setSelectedPrice={setSelectedPrice}
+            selectedAmenities={selectedAmenities}
+            setSelectedAmenities={setSelectedAmenities}
+            guests={guests}
+            setGuests={setGuests}
+          />
+        </div>
+        <section className="flex-1 h-[calc(100vh-5rem)] overflow-y-auto pl-8 pt-5">
           <h1 className="text-3xl font-bold mb-6 text-gray-800">
             Available Rooms
           </h1>
-          <div>
-            <AllRoomsType />
-          </div>
-        </main>
-      </div>
-    </div>
+          <AllRoomsType />
+        </section>
+      </main>
+    </>
   );
 };
 
