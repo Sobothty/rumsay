@@ -183,6 +183,11 @@ export default function NavbarPage() {
                 <div className="px-6 py-3 font-bold border-b border-gray-100 dark:border-gray-800 text-lg flex items-center gap-2">
                   <ShoppingCart className="w-5 h-5 text-blue-500" />
                   Your Bookings
+                  <button
+                    onClick={() => navigate("/checkout")}
+                    className="bg-blue-600 text-sm text-white rounded-4xl px-5 py-3 shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300">
+                    Checkout
+                  </button>
                 </div>
                 {cartItems.length === 0 ? (
                   <div className="px-6 py-8 text-gray-400 text-center">

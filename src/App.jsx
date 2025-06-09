@@ -16,6 +16,7 @@ import { Reservation } from "./pages/admin/page/Reservation";
 import ProfileDashboard from "./pages/profileDashboard";
 import BookingRoom from "./pages/bookingRoomPage";
 import RoomDetail from "./components/RoomDetail";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="dashboard" element={<ProfileDashboard />} />
           <Route path="booking" element={<BookingRoom />} />
           <Route path="room-detail/:id" element={<RoomDetail />} />
+          <Route path="checkout" element={<CheckoutPage/>} />
         </Route>
         {/* Admin pages without RootLayout (no navbar/footer) */}
         <Route path="admin" element={<AdminDashboard />}>
