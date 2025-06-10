@@ -1,57 +1,72 @@
-"use client"
+"use client";
 
-import React from "react"
-import { useState } from "react"
-import { CreditCard, Shield, ArrowLeft, Users, Trash2 } from "lucide-react"
+import React from "react";
+import { useState } from "react";
+import { CreditCard, Shield, ArrowLeft, Users, Trash2 } from "lucide-react";
 
 // Custom Button Component
-const Button = ({ children, variant = "default", className = "", ...props }) => {
+const Button = ({
+  children,
+  variant = "default",
+  className = "",
+  ...props
+}) => {
   const baseStyles =
-    "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background"
+    "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background";
   const variants = {
     default: "bg-blue-600 text-white hover:bg-blue-700",
     ghost: "hover:bg-gray-100 hover:text-gray-900",
-    outline: "border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900",
-  }
-  const sizes = "h-10 py-2 px-4"
+    outline:
+      "border border-gray-200 bg-white hover:bg-gray-100 hover:text-gray-900",
+  };
+  const sizes = "h-10 py-2 px-4";
 
   return (
-    <button className={`${baseStyles} ${variants[variant]} ${sizes} ${className}`} {...props}>
+    <button
+      className={`${baseStyles} ${variants[variant]} ${sizes} ${className}`}
+      {...props}
+    >
       {children}
     </button>
-  )
-}
+  );
+};
 
 // Custom Card Components
 const Card = ({ children, className = "", ...props }) => (
-  <div className={`rounded-lg bg-white text-gray-950 shadow-md ${className}`} {...props}>
+  <div
+    className={`rounded-lg bg-white text-gray-950 shadow-md ${className}`}
+    {...props}
+  >
     {children}
   </div>
-)
+);
 
 const CardHeader = ({ children, className = "", ...props }) => (
   <div className={`flex flex-col space-y-1.5 p-6 ${className}`} {...props}>
     {children}
   </div>
-)
+);
 
 const CardTitle = ({ children, className = "", ...props }) => (
-  <h3 className={`text-2xl font-semibold leading-none tracking-tight ${className}`} {...props}>
+  <h3
+    className={`text-2xl font-semibold leading-none tracking-tight ${className}`}
+    {...props}
+  >
     {children}
   </h3>
-)
+);
 
 const CardDescription = ({ children, className = "", ...props }) => (
   <p className={`text-sm text-gray-500 ${className}`} {...props}>
     {children}
   </p>
-)
+);
 
 const CardContent = ({ children, className = "", ...props }) => (
   <div className={`p-6 pt-0 ${className}`} {...props}>
     {children}
   </div>
-)
+);
 
 // Custom Input Component
 const Input = ({ className = "", type = "text", ...props }) => (
@@ -60,7 +75,7 @@ const Input = ({ className = "", type = "text", ...props }) => (
     className={`flex h-10 w-full rounded-md bg-white px-3 py-2 text-sm shadow-sm ring-offset-white file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
     {...props}
   />
-)
+);
 
 // Custom Label Component
 const Label = ({ children, className = "", ...props }) => (
@@ -70,27 +85,32 @@ const Label = ({ children, className = "", ...props }) => (
   >
     {children}
   </label>
-)
+);
 
 // Custom Select Components
 const Select = ({ children, onValueChange, ...props }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [value, setValue] = useState("")
+  const [isOpen, setIsOpen] = useState(false);
+  const [value, setValue] = useState("");
 
   const handleValueChange = (newValue) => {
-    setValue(newValue)
-    onValueChange?.(newValue)
-    setIsOpen(false)
-  }
+    setValue(newValue);
+    onValueChange?.(newValue);
+    setIsOpen(false);
+  };
 
   return (
     <div className="relative" {...props}>
       {React.Children.map(children, (child) =>
-        React.cloneElement(child, { isOpen, setIsOpen, value, onValueChange: handleValueChange }),
+        React.cloneElement(child, {
+          isOpen,
+          setIsOpen,
+          value,
+          onValueChange: handleValueChange,
+        })
       )}
     </div>
-  )
-}
+  );
+};
 
 const SelectTrigger = ({ children, isOpen, setIsOpen, value }) => (
   <button
@@ -100,21 +120,25 @@ const SelectTrigger = ({ children, isOpen, setIsOpen, value }) => (
   >
     {children}
   </button>
-)
+);
 
 const SelectValue = ({ placeholder, value }) => (
-  <span className={value ? "text-gray-900" : "text-gray-500"}>{value || placeholder}</span>
-)
+  <span className={value ? "text-gray-900" : "text-gray-500"}>
+    {value || placeholder}
+  </span>
+);
 
 const SelectContent = ({ children, isOpen, onValueChange }) => {
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="absolute top-full left-0 right-0 z-50 mt-1 max-h-60 overflow-auto rounded-md bg-white py-1 shadow-lg">
-      {React.Children.map(children, (child) => React.cloneElement(child, { onValueChange }))}
+      {React.Children.map(children, (child) =>
+        React.cloneElement(child, { onValueChange })
+      )}
     </div>
-  )
-}
+  );
+};
 
 const SelectItem = ({ children, value, onValueChange }) => (
   <button
@@ -124,12 +148,15 @@ const SelectItem = ({ children, value, onValueChange }) => (
   >
     {children}
   </button>
-)
+);
 
 // Custom Separator Component
 const Separator = ({ className = "", ...props }) => (
-  <div className={`shrink-0 bg-gray-200 h-[1px] w-full ${className}`} {...props} />
-)
+  <div
+    className={`shrink-0 bg-gray-200 h-[1px] w-full ${className}`}
+    {...props}
+  />
+);
 
 // Sample booking data with multiple rooms
 const bookingDetails = {
@@ -155,33 +182,74 @@ const bookingDetails = {
     },
   ],
   hotelAddons: [],
-}
+};
 
 export default function HotelCheckoutPage() {
-  const [specialRequests, setSpecialRequests] = useState("")
-  const [rooms, setRooms] = useState(bookingDetails.rooms)
+  const [specialRequests, setSpecialRequests] = useState("");
+  const [rooms, setRooms] = useState(bookingDetails.rooms);
+
+  // Add state for guest info
+  const [guestInfo, setGuestInfo] = useState({
+    name: "",
+    email: "",
+    gender: "",
+  });
+
+  // Fetch profile on mount
+  React.useEffect(() => {
+    const fetchProfile = async () => {
+      const token = localStorage.getItem("authToken");
+      if (!token) return;
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/api/profile`,
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          console.log("Profile data:", data.data); // Debug: check gender value
+          setGuestInfo({
+            name: data.data.name || "",
+            email: data.data.email || "",
+            gender: data.data.gender || "",
+          });
+        }
+      } catch (err) {
+        // handle error if needed
+      }
+    };
+    fetchProfile();
+  }, []);
 
   // Calculate totals
   const calculateRoomTotal = (room) => {
-    return room.pricePerNight * bookingDetails.nights
-  }
+    return room.pricePerNight * bookingDetails.nights;
+  };
 
-  const roomsTotal = rooms.reduce((sum, room) => sum + calculateRoomTotal(room), 0)
-  const total = roomsTotal
+  const roomsTotal = rooms.reduce(
+    (sum, room) => sum + calculateRoomTotal(room),
+    0
+  );
+  const total = roomsTotal;
 
   const handleBackToRooms = () => {
     // For browser history API (works without router)
-    window.history.back()
+    window.history.back();
 
     // Or navigate to specific route
     // window.location.href = '/rooms'
-  }
+  };
 
   const handleRemoveRoom = (roomId) => {
     if (rooms.length > 1) {
-      setRooms(rooms.filter((room) => room.id !== roomId))
+      setRooms(rooms.filter((room) => room.id !== roomId));
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -192,8 +260,12 @@ export default function HotelCheckoutPage() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Room Selection
           </Button>
-          <h1 className="text-3xl font-bold text-gray-900">Complete Your Booking</h1>
-          <p className="text-gray-600 mt-2">Just a few more details to confirm your stay</p>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Complete Your Booking
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Just a few more details to confirm your stay
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -210,23 +282,22 @@ export default function HotelCheckoutPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="firstName">First Name</Label>
-                    <Input id="firstName" placeholder="John" />
-                  </div>
-                  <div>
-                    <Label htmlFor="lastName">Last Name</Label>
-                    <Input id="lastName" placeholder="Doe" />
-                  </div>
+                <div>
+                  <Label htmlFor="name">Name</Label>
+                  <Input id="name" value={guestInfo.name} readOnly />
                 </div>
                 <div>
                   <Label htmlFor="email">Email Address</Label>
-                  <Input id="email" type="email" placeholder="john@example.com" />
+                  <Input
+                    id="email"
+                    type="email"
+                    value={guestInfo.email}
+                    readOnly
+                  />
                 </div>
                 <div>
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <Input id="phone" type="tel" placeholder="+1 (555) 123-4567" />
+                  <Label htmlFor="gender">Gender</Label>
+                  <Input id="gender" value={guestInfo.gender} readOnly />
                 </div>
               </CardContent>
             </Card>
@@ -245,15 +316,25 @@ export default function HotelCheckoutPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="checkIn">Check-in Date</Label>
-                    <Input id="checkIn" type="date" defaultValue={bookingDetails.checkIn} />
+                    <Input
+                      id="checkIn"
+                      type="date"
+                      defaultValue={bookingDetails.checkIn}
+                    />
                   </div>
                   <div>
                     <Label htmlFor="checkOut">Check-out Date</Label>
-                    <Input id="checkOut" type="date" defaultValue={bookingDetails.checkOut} />
+                    <Input
+                      id="checkOut"
+                      type="date"
+                      defaultValue={bookingDetails.checkOut}
+                    />
                   </div>
                 </div>
                 <div>
-                  <Label htmlFor="specialRequests">Special Requests (optional)</Label>
+                  <Label htmlFor="specialRequests">
+                    Special Requests (optional)
+                  </Label>
                   <textarea
                     id="specialRequests"
                     rows={3}
@@ -285,7 +366,11 @@ export default function HotelCheckoutPage() {
               <CardContent className="space-y-4">
                 <div>
                   <Label htmlFor="cardNumber">Card Number</Label>
-                  <Input id="cardNumber" placeholder="1234 5678 9012 3456" className="text-lg" />
+                  <Input
+                    id="cardNumber"
+                    placeholder="1234 5678 9012 3456"
+                    className="text-lg"
+                  />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -343,7 +428,9 @@ export default function HotelCheckoutPage() {
                       />
                       <div className="flex-1">
                         <div className="flex justify-between">
-                          <h4 className="font-medium text-gray-900">{room.roomType}</h4>
+                          <h4 className="font-medium text-gray-900">
+                            {room.roomType}
+                          </h4>
                           {rooms.length > 1 && (
                             <button
                               onClick={() => handleRemoveRoom(room.id)}
@@ -359,7 +446,9 @@ export default function HotelCheckoutPage() {
                           <span>{room.guests} Guests</span>
                         </div>
                         <div className="flex items-center text-sm text-gray-500 mt-1">
-                          <span className="font-medium">${room.pricePerNight.toFixed(2)}</span>
+                          <span className="font-medium">
+                            ${room.pricePerNight.toFixed(2)}
+                          </span>
                           <span className="mx-1">×</span>
                           <span>{bookingDetails.nights} nights</span>
                         </div>
@@ -386,8 +475,13 @@ export default function HotelCheckoutPage() {
 
                 {/* Cancellation Policy */}
                 <div className="text-sm text-gray-600 bg-blue-50 p-3 rounded-lg shadow-sm">
-                  <p className="font-medium text-blue-700 mb-1">Free cancellation until June 13, 2025</p>
-                  <p>After that, cancellations will be charged the first night's rate.</p>
+                  <p className="font-medium text-blue-700 mb-1">
+                    Free cancellation until June 13, 2025
+                  </p>
+                  <p>
+                    After that, cancellations will be charged the first night's
+                    rate.
+                  </p>
                 </div>
 
                 {/* Complete Booking Button */}
@@ -396,7 +490,8 @@ export default function HotelCheckoutPage() {
                 </Button>
 
                 <p className="text-xs text-gray-500 text-center">
-                  By completing your booking, you agree to our Terms of Service and Privacy Policy.
+                  By completing your booking, you agree to our Terms of Service
+                  and Privacy Policy.
                 </p>
               </CardContent>
             </Card>
@@ -404,5 +499,5 @@ export default function HotelCheckoutPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
