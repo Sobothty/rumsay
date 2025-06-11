@@ -262,8 +262,16 @@ export default function NavbarPage() {
             <button
               className="flex items-center gap-2 focus:outline-none"
               onClick={() => setUserMenuOpen((prev) => !prev)}
-            >
-              <User2 className="w-7 h-7 text-primary dark:text-white transition-transform duration-200" />
+            > 
+              {profile.avatar && profile.avatar.trim() !== "" ? (
+                <img
+                  src={profile.avatar}
+                  alt={profile.name || "User"}
+                  className="w-8 h-8 rounded-full border-2 border-primary object-cover"
+                />
+              ) : (
+                <User2 className="w-7 h-7 text-primary dark:text-white transition-transform duration-200" />
+              )}
               <span className="font-semibold text-gray-700 dark:text-gray-200">
                 {profile.name || "User"}
               </span>
