@@ -157,7 +157,7 @@ export default function NavbarPage() {
         {/* Show Booking button if authenticated and NOT on booking/room-detail */}
         {isAuthenticated && !isBookingOrRoomDetail && (
           <Link
-            to="/booking"
+            to="/check-in-out"
             className="ml-2 flex items-center gap-2 px-5 py-2 rounded-full bg-primary text-white font-bold shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
           >
             <SquarePlus className="w-5 h-5" />
@@ -185,7 +185,8 @@ export default function NavbarPage() {
                   Your Bookings
                   <button
                     onClick={() => navigate("/checkout")}
-                    className="bg-blue-600 text-sm text-white rounded-4xl px-5 py-3 shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300">
+                    className="bg-blue-600 text-sm text-white rounded-4xl px-5 py-3 shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300"
+                  >
                     Checkout
                   </button>
                 </div>
@@ -369,7 +370,7 @@ export default function NavbarPage() {
           {/* Mobile Booking button */}
           {isAuthenticated && !isBookingOrRoomDetail && (
             <Link
-              to="/booking"
+              to="/check-in-out"
               className="mt-2 flex items-center justify-center gap-2 px-6 py-2 rounded-full bg-primary text-white font-bold shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-400"
             >
               <SquarePlus className="w-5 h-5" />

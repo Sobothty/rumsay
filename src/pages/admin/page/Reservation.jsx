@@ -52,7 +52,7 @@ export const Reservation = () => {
       return;
     }
     try {
-      await axios.post(
+      await axios.put(
         `${
           import.meta.env.VITE_BASE_URL
         }/api/admin/booking-rooms/${bookingId}/confirm`,
@@ -71,6 +71,7 @@ export const Reservation = () => {
       );
       toast.success("Booking confirmed successfully!");
     } catch (err) {
+      console.error("Confirm booking error:", err);
       toast.error("Failed to confirm booking.");
     }
   };
