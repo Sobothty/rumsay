@@ -4,7 +4,10 @@ import React from "react";
 import { useState } from "react";
 import { CreditCard, Shield, ArrowLeft, Users, Trash2 } from "lucide-react";
 
-// Custom Button Component
+import BookingPaymentForm from "../components/Payment/PaymentForm";
+import  StripeWrapper  from "../components/Payment/StripeWrapper";
+
+
 const Button = ({
   children,
   variant = "default",
@@ -195,6 +198,8 @@ export default function HotelCheckoutPage() {
     gender: "",
   });
 
+  const [clientSecret, setClientSecret] = useState("");
+
   // Fetch profile on mount
   React.useEffect(() => {
     const fetchProfile = async () => {
@@ -225,6 +230,7 @@ export default function HotelCheckoutPage() {
     };
     fetchProfile();
   }, []);
+
 
   // Calculate totals
   const calculateRoomTotal = (room) => {
@@ -301,7 +307,6 @@ export default function HotelCheckoutPage() {
                 </div>
               </CardContent>
             </Card>
-
             {/* Stay Details */}
             <Card>
               <CardHeader>
@@ -346,66 +351,11 @@ export default function HotelCheckoutPage() {
                 </div>
               </CardContent>
             </Card>
-
-            {/* Payment Information */}
+            Payment Information
             <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold text-sm">
-                    3
-                  </div>
-                  Payment Information
-                </CardTitle>
-                <CardDescription>
-                  <div className="flex items-center gap-2 mt-2">
-                    <CreditCard className="w-4 h-4" />
-                    We accept all major credit and debit cards
-                  </div>
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="cardNumber">Card Number</Label>
-                  <Input
-                    id="cardNumber"
-                    placeholder="1234 5678 9012 3456"
-                    className="text-lg"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="expiry">Expiry Date</Label>
-                    <Input id="expiry" placeholder="MM/YY" />
-                  </div>
-                  <div>
-                    <Label htmlFor="cvc">Security Code (CVC)</Label>
-                    <Input id="cvc" placeholder="123" />
-                  </div>
-                </div>
-                <div>
-                  <Label htmlFor="cardName">Name on Card</Label>
-                  <Input id="cardName" placeholder="John Doe" />
-                </div>
-
-                {/* Card Type Icons */}
-                <div className="flex items-center gap-2 pt-2">
-                  <span className="text-sm text-gray-500">We accept:</span>
-                  <div className="flex gap-2">
-                    <div className="w-8 h-5 bg-blue-600 rounded text-white text-xs flex items-center justify-center font-bold shadow-sm">
-                      VISA
-                    </div>
-                    <div className="w-8 h-5 bg-red-500 rounded text-white text-xs flex items-center justify-center font-bold shadow-sm">
-                      MC
-                    </div>
-                    <div className="w-8 h-5 bg-blue-400 rounded text-white text-xs flex items-center justify-center font-bold shadow-sm">
-                      AMEX
-                    </div>
-                    <div className="w-8 h-5 bg-orange-500 rounded text-white text-xs flex items-center justify-center font-bold shadow-sm">
-                      DISC
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
+              <StripeWrapper>
+                <BookingPaymentForm />
+              </StripeWrapper>
             </Card>
           </div>
 

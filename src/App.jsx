@@ -18,7 +18,7 @@ import BookingRoom from "./pages/bookingRoomPage";
 import RoomDetail from "./components/RoomDetail";
 import CheckoutPage from "./pages/CheckoutPage";
 import CheckinCheckout from "./pages/CheckInCheckOut";
-import PaymentSuccess from "./components/PaymentSuccess";
+import PaymentSuccess from "./components/Payment/PaymentSuccess";
 
 function App() {
   return (
