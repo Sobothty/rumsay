@@ -3,8 +3,6 @@ import {
   User,
   Edit3,
   Calendar,
-  MapPin,
-  Phone,
   Mail,
   Clock,
   CheckCircle,
@@ -90,10 +88,38 @@ const ProfileDashboard = () => {
   const handleSave = async () => {
     setSaving(true);
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    setProfile(form);
-    setEditing(false);
+    try {
+      const token = localStorage.getItem("authToken");
+      // remove avatar (ignore profile image field)
+      const { avatar, ...formDataWithoutAvatar } = form; 
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/api/profile`,
+        {
+          method: "POST", 
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formDataWithoutAvatar),
+        }
+      );
+  
+      const json = await response.json();
+      console.log("API response:", json); // Add debug info
+      if (response.ok && json.result && json.data) {
+        setProfile(json.data); // Update profile with returned data
+        setEditing(false);
+      } else {
+        console.error("Profile update failed:", json.message || json);
+        alert("Failed to update profile. Please try again.");
+      }
+    } catch (error) {
+      console.error("Update error:", error);
+      alert("Something went wrong. Please try again.");
+    }
     setSaving(false);
   };
+  
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -307,7 +333,7 @@ const ProfileDashboard = () => {
                   required
                 />
               </div>
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium mb-2">Gender</label>
                 <input
                   type="text"
@@ -316,6 +342,19 @@ const ProfileDashboard = () => {
                   onChange={handleChange}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500"
                 />
+              </div> */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Gender</label>
+                <select
+                  name="gender"
+                  value={form.gender || ""}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white"
+                >
+                  <option value="">Select gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                </select>
               </div>
             </div>
 
