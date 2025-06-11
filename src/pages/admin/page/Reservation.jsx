@@ -76,6 +76,56 @@ export const Reservation = () => {
     }
   };
 
+  // Checkout booking
+  const handleCheckout = async (bookingId, roomIds) => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      toast.error("No auth token found.");
+      return;
+    }
+    try {
+      // Update booking status to completed
+      await axios.put(
+        `${
+          import.meta.env.VITE_BASE_URL
+        }/api/admin/booking-rooms/${bookingId}/complete`,
+        null,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Update all related rooms' have_been_booking to true
+      await Promise.all(
+        roomIds.map((roomId) =>
+          axios.put(
+            `${
+              import.meta.env.VITE_BASE_URL
+            }/api/admin/rooms/${roomId}/update-booking-status`,
+            { have_been_booking: true },
+            {
+              headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+        )
+      );
+      setBookings((prev) =>
+        prev.map((b) =>
+          b.id === bookingId ? { ...b, booking_status: "completed" } : b
+        )
+      );
+      toast.success("Booking checked out successfully!");
+    } catch (err) {
+      console.error("Checkout booking error:", err);
+      toast.error("Failed to checkout booking.");
+    }
+  };
+
   const handleDelete = async (bookingId) => {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -86,11 +136,10 @@ export const Reservation = () => {
       return;
     }
     try {
-      await axios.post(
+      await axios.delete(
         `${
           import.meta.env.VITE_BASE_URL
-        }/api/admin/booking-rooms/${bookingId}/cancel`,
-        null,
+        }/api/bookings/${bookingId}/cancel`,
         {
           headers: {
             Accept: "application/json",
@@ -258,13 +307,29 @@ export const Reservation = () => {
                     </span>
                   </td>
                   <td className="py-3 px-4 flex gap-2 justify-center">
-                    <button
-                      onClick={() => handleConfirm(booking.id)}
-                      className="px-4 py-1 rounded-lg bg-green-500 text-white font-semibold hover:bg-green-600 transition"
-                      disabled={booking.booking_status === "confirmed"}
-                    >
-                      Confirm
-                    </button>
+                    {/* Show Confirm button only if pending */}
+                    {booking.booking_status === "pending" && (
+                      <button
+                        onClick={() => handleConfirm(booking.id)}
+                        className="px-4 py-1 rounded-lg bg-green-500 text-white font-semibold hover:bg-green-600 transition"
+                      >
+                        Confirm
+                      </button>
+                    )}
+                    {/* Show Checkout button only if confirmed */}
+                    {booking.booking_status === "confirmed" && (
+                      <button
+                        onClick={() =>
+                          handleCheckout(
+                            booking.id,
+                            booking.rooms ? booking.rooms.map((r) => r.id) : []
+                          )
+                        }
+                        className="px-4 py-1 rounded-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition"
+                      >
+                        Checkout
+                      </button>
+                    )}
                     <button
                       onClick={() => handleDelete(booking.id)}
                       className="px-4 py-1 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transition"
