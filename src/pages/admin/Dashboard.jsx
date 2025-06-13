@@ -91,7 +91,7 @@ export default function AdminDashboard() {
         } else if (data?.data?.role) {
           role = String(data.data.role).toLowerCase();
         }
-        if (role !== "admin") {
+        if (role !== "admin" && role !== "super admin") {
           navigate("/");
         }
       } catch {

@@ -50,7 +50,7 @@ const SignIn = () => {
         roleName = "";
       }
 
-      if (roleName && roleName.toLowerCase() === "admin") {
+      if (roleName && roleName.toLowerCase() === "admin" || roleName.toLowerCase() === "super admin") {
         navigate("/admin");
       } else if (roleName && roleName.toLowerCase() === "regular user") {
         navigate("/");
