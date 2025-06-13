@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import koko from "../../assets/left-pic_signup.png";
 
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
@@ -209,7 +210,7 @@ const SignIn = () => {
         style={{ animationDelay: "0.2s" }}
       >
         <img
-          src="src/assets/signup/left-pic_signup.png"
+          src={koko}
           alt="Room"
           className="w-full h-full object-cover rounded-l-2xl shadow-2xl min-h-screen"
         />
