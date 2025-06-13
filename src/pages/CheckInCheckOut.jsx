@@ -19,7 +19,7 @@ const CheckinCheckout = () => {
   const getTodayDate = () => {
     return new Date().toISOString().split("T")[0];
   };
-
+  
   const getTomorrowDate = () => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
