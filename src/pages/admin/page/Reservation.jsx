@@ -16,7 +16,7 @@ export const Reservation = () => {
       }
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/api/admin/booking-rooms`,
+          `${import.meta.env.VITE_BASE_URL}/api/super-admin/booking-rooms`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
