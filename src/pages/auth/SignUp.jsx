@@ -3,6 +3,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import axios from "axios";
+import facebookPic from "../../assets/signup/facebook.png";
+import googlePic from "../../assets/signup/google.png";
 
 const SignUp = () => {
   const [loading, setLoading] = useState(false);
@@ -268,7 +270,7 @@ const SignUp = () => {
                     className="flex-1 flex items-center justify-center border border-gray-300 dark:border-gray-700 rounded-xl py-2 text-sm bg-white/70 dark:bg-gray-800/70 hover:bg-blue-50 dark:hover:bg-gray-700 transition"
                   >
                     <img
-                      src="src/assets/signup/google.png"
+                      src={googlePic}
                       alt="Google"
                       className="h-5 mr-2"
                     />
@@ -279,7 +281,7 @@ const SignUp = () => {
                     className="flex-1 flex items-center justify-center border border-gray-300 dark:border-gray-700 rounded-xl py-2 text-sm bg-white/70 dark:bg-gray-800/70 hover:bg-blue-50 dark:hover:bg-gray-700 transition"
                   >
                     <img
-                      src="src/assets/signup/facebook.png"
+                      src={facebookPic}
                       alt="Facebook"
                       className="h-5 mr-2"
                     />

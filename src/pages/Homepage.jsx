@@ -40,6 +40,21 @@ const amenities = [
   { icon: <FaConciergeBell />, label: "Room Service" }, // Reuse this icon
   { icon: <FaSpa />, label: "Spa" },
 ];
+const images =[
+  {
+    image: " https://plus.unsplash.com/premium_photo-1661881436846-5a0f53025711?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWwlMjBsb2JieXxlbnwwfHwwfHx8MA%3D%3D"
+  },
+  {
+    image: "https://upload.wikimedia.org/wikipedia/commons/0/07/Hotel-suite-living-room.jpg"
+  },
+  {
+    image: " https://media.istockphoto.com/id/119926339/photo/resort-swimming-pool.jpg?s=612x612&w=0&k=20&c=9QtwJC2boq3GFHaeDsKytF4-CavYKQuy1jBD2IRfYKc="
+  },
+  {
+    image: " https://t3.ftcdn.net/jpg/03/24/72/72/360_F_324727233_GwGkDp3eOeEIETimy5wbSp2983GLrkwy.jpg"
+  }
+]
+
 
 export default function Homepage() {
 
@@ -138,14 +153,14 @@ export default function Homepage() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((i) => (
+            {images.map((i) => (
               <div
                 key={i}
                 className="relative h-64 rounded-xl overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-gray-800 group-hover:opacity-90 transition-opacity">
                   <img
-                    src={`https://source.unsplash.com/random/600x600/?hotel,luxury,${i}`}
+                    src={`${i.image}`}
                     alt="Hotel space"
                     className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
                   />
@@ -187,7 +202,7 @@ export default function Homepage() {
         <section className="bg-white py-16 px-6">
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
             <img
-              src="/preview-hotel.jpg" // Change this to your preview image path
+              src="https://www.korusgroup.com/wp-content/uploads/2023/02/luxury-hotel-design-build.jpg" // Change this to your preview image path
               alt="Hotel Preview"
               className="w-full h-80 object-cover rounded-2xl shadow-lg"
             />
