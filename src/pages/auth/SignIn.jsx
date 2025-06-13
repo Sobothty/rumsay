@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import koko from "../../assets/left-pic_signup.png";
+import koko from "../../assets/signup/left-pic_signup.png";
 
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
