@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./App.css";
 import RootLayout from "./components/layout/RootLayout";
-import Homepage from "./pages/homePage";
+import Homepage from "./pages/Homepage";
 import About from "./pages/aboutPage";
 import Contact from "./pages/contactPage";
 import SignUp from "./pages/auth/SignUp";
@@ -18,7 +18,7 @@ import BookingRoom from "./pages/bookingRoomPage";
 import RoomDetail from "./components/RoomDetail";
 import CheckoutPage from "./pages/CheckoutPage";
 import CheckinCheckout from "./pages/CheckInCheckOut";
-import PaymentSuccess from "./components/PaymentSuccess";
+import PaymentSuccess from "./components/Payment/PaymentSuccess";
 
 function App() {
   return (

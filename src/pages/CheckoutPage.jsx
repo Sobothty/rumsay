@@ -3,9 +3,14 @@
 import React from "react"
 import { useState, useEffect } from "react"
 import { CreditCard, Shield, ArrowLeft, Users, Trash2, Calendar, ArrowRight, CheckCircle } from "lucide-react"
-
-// Custom Button Component
-const Button = ({ children, variant = "default", className = "", ...props }) => {
+import BookingPaymentForm from "../components/Payment/PaymentForm";
+import  StripeWrapper  from "../components/Payment/StripeWrapper";
+const Button = ({
+  children,
+  variant = "default",
+  className = "",
+  ...props
+}) => {
   const baseStyles =
     "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background"
   const variants = {
@@ -227,6 +232,8 @@ export default function HotelCheckoutPage() {
   const checkInFormatted = formatDate(checkInDate)
   const checkOutFormatted = formatDate(checkOutDate)
 
+  const [clientSecret, setClientSecret] = useState("");
+
   // Fetch profile on mount
   useEffect(() => {
     const fetchCartData = () => {
@@ -270,6 +277,33 @@ export default function HotelCheckoutPage() {
       } catch (err) {
         // handle error if needed
       }
+    };
+    fetchProfile();
+  }, []);
+
+
+  // Calculate totals
+  const calculateRoomTotal = (room) => {
+    return room.pricePerNight * bookingDetails.nights;
+  };
+
+  const roomsTotal = rooms.reduce(
+    (sum, room) => sum + calculateRoomTotal(room),
+    0
+  );
+  const total = roomsTotal;
+
+  const handleBackToRooms = () => {
+    // For browser history API (works without router)
+    window.history.back();
+
+    // Or navigate to specific route
+    // window.location.href = '/rooms'
+  };
+
+  const handleRemoveRoom = (roomId) => {
+    if (rooms.length > 1) {
+      setRooms(rooms.filter((room) => room.id !== roomId));
     }
     fetchCartData()
     fetchProfile()
@@ -379,7 +413,6 @@ export default function HotelCheckoutPage() {
                 </div>
               </CardContent>
             </Card>
-
             {/* Stay Details */}
             <Card className="overflow-hidden transform transition-all duration-300 hover:shadow-xl">
               <div className="h-2 bg-gradient-to-r from-blue-500 to-blue-700"></div>
@@ -467,7 +500,6 @@ export default function HotelCheckoutPage() {
                 
               </CardContent>
             </Card>
-
             {/* Payment Information */}
             <Card className="overflow-hidden transform transition-all duration-300 hover:shadow-xl">
               <div className="h-2 bg-gradient-to-r from-blue-600 to-blue-800"></div>
@@ -551,7 +583,6 @@ export default function HotelCheckoutPage() {
                   </div>
                 </div>
               </CardContent>
-            </Card>
           </div>
 
           {/* Right Column - Booking Summary */}
