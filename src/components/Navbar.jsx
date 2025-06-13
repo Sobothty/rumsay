@@ -127,6 +127,11 @@ export default function NavbarPage() {
     window.__addToCart = handleAddToCart;
   });
 
+
+  const handleCheckout = () => {
+    navigate("/checkout", { state: { cartItems } });
+  };
+  console.log(cartItems)
   return (
     <nav className="sticky top-4 z-50 mx-auto max-w-[1280px] min-w-[320px] sm:min-w-[640px] rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-lg shadow-xl border border-gray-200 dark:border-gray-800 px-6 py-3 flex items-center transition-all duration-300">
       <Link to="/" className="flex items-center gap-3">
@@ -183,12 +188,15 @@ export default function NavbarPage() {
                 <div className="px-6 py-3 font-bold border-b border-gray-100 dark:border-gray-800 text-lg flex items-center gap-2">
                   <ShoppingCart className="w-5 h-5 text-blue-500" />
                   Your Bookings
-                  <button
+                  <button onClick={handleCheckout} className="bg-blue-600 text-sm text-white rounded-4xl px-5 py-3 shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300">
+                    Checkout
+                  </button>
+                  {/* <button
                     onClick={() => navigate("/checkout")}
                     className="bg-blue-600 text-sm text-white rounded-4xl px-5 py-3 shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300"
                   >
                     Checkout
-                  </button>
+                  </button> */}
                 </div>
                 {cartItems.length === 0 ? (
                   <div className="px-6 py-8 text-gray-400 text-center">
